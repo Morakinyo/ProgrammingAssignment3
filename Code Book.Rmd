@@ -1,0 +1,73 @@
+---
+title: "Code Book"
+author: "Morakinyo"
+date: "2023-09-02"
+output: pdf_document
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## This is the code book for the project
+
+# About the source data
+
+The source data are from the Human Activity Recognition Using Smartphones Data Set. A full description is available at this site: [http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) 
+The data for the project: [https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)
+
+# About the R script
+The run_analysis.R script performs the data preparation and then followed by the 5 steps required as described in the course project’s definition.
+
+Having downloaded the dataset and assigned each data to variables as shown below:
+
+* features <- features.txt: The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ.
+    + 561 rows, 2 columns
+
+* activities <- activity_labels.txt : List of activities performed when the corresponding measurements were taken and its labels.
+    + 6 rows, 2 columns
+* subject_test <- test/subject_test.txt :contains test data of 9/30 volunteer test subjects being observed.
+    + 2947 rows, 1 column
+* x_test <- test/X_test.txt : contains recorded features of the test data
+    + 2947 rows, 561 columns
+* y_test <- test/y_test.txt : contains activityId of the test data
+    + 2947 rows, 1 columns
+* subject_train <- test/subject_train.txt : contains train data of 21/30 volunteer subjects being observed.
+    + 7352 rows, 1 column
+* x_train <- test/X_train.txt : contains recorded features of the train data.
+    + 7352 rows, 561 columns
+* y_train <- test/y_train.txt : contains activityId of the train data.
+    + 7352 rows, 1 columns
+
+The following steps were followed as instructed
+
+1. Merges the training and the test sets to create one data set
+* X  is created by merging x_train and x_test using rbind() function
+* Y  is created by merging y_train and y_test using rbind() function
+* Subject  is created by merging subject_train and subject_test using rbind() function
+* Merged  is created by merging Subject, Y and X using cbind() function
+
+2. Extracts only the measurements on the mean and standard deviation for each measurement
+* mean_std is created by subsetting Merged, selecting only columns: subject, activityId and the measurements on the mean and standard deviation (std) for each measurement
+
+3. Uses descriptive activity names to name the activities in the data set
+* Entire numbers in code column of the mean_std replaced with corresponding activity taken from second column of the activities variable
+
+4. Appropriately labels the data set with descriptive variable names:
+* activityId column in mean_std renamed into activity
+* All Acc in the column name replaced with Accelerometer
+* All Gyro in column name replaced with Gyroscope
+* All BodyBody in column name replaced with Body
+* All Mag in column name replaced with Magnitude
+* All data set starting with character f in column name replaced with Frequency
+* All data set starting with character t in column name replaced with Time
+
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject
+* TidyData is created by summarizing and taking the means of each variable for each activity and each subject, after using the grouped by function on subject and activity.
+    + 180 rows, 88 columns
+* TidyData is exported into tidy-data.txt file.
+      
+        
+
